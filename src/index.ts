@@ -7,7 +7,7 @@ import { MySQLDB } from "./utils/db/mysql.db";
 async function bootstrap() {
   const configManager = ConfigManager.getInstance();
   configManager.addSource(new EnvConfigSource());
-
+  /*
   const db = await MySQLDB.getInstance({
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT),
@@ -16,7 +16,8 @@ async function bootstrap() {
     database: process.env.DB_DATABASE,
   });
   configManager.addSource(new DbConfigSource(db));
-
+  */
+ 
   startCronJobs();
 }
 

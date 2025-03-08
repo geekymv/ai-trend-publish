@@ -8,7 +8,7 @@ import {
   getTitleUserPrompt
 } from "../prompts/summarizer.prompt";
 
-const MODEL_NAME = "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo";
+const MODEL_NAME = "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free";
 
 export class TogetherAISummarizer implements ContentSummarizer {
   private together!: Together;

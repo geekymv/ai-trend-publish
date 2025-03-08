@@ -108,8 +108,46 @@ class DeepSeekProvider implements APIProvider {
   }
 }
 
+class OpenRouterProvider implements APIProvider {
+  private readonly API_BASE_URL = "https://openrouter.ai/api/v1";
+  constructor(
+    private readonly config: APIConfig
+  ) {
+    this.config.modelName = this.config.modelName || "deepseek/deepseek-r1:free";
+  }
+  async initialize(): Promise<void> {
+    // 验证必要的配置 
+    if (!this.config.apiKey) {
+      throw new Error("OpenRouter API key is required");
+    }
+  }
+  async callAPI(messages: any[]): Promise<any> {
+    const response = await fetch(`${this.API_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.config.apiKey}`,
+        'User-Agent': 'TrendFinder/1.0.0' 
+      },
+      body: JSON.stringify({
+        model: this.config.modelName,
+        messages,
+        temperature: 0.3
+      })
+    });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API Error Response:', errorText);
+      throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+    }
+    const data = await response.json();
+    console.log('API Response:', JSON.stringify(data, null, 2));
+    return data;
+  }
+}
+
 export interface ContentRankerConfig {
-  provider: "dashscope" | "deepseek";
+  provider: "dashscope" | "deepseek" | "openrouter";
   apiKey: string;
   modelName?: string;
 }
@@ -127,8 +165,10 @@ export class ContentRanker {
     // 根据配置创建对应的provider
     if (config.provider === "deepseek") {
       this.apiProvider = new DeepSeekProvider(apiConfig);
-    } else {
+    } else if (config.provider === "dashscope"){
       this.apiProvider = new DashScopeProvider(apiConfig);
+    } else  {
+      this.apiProvider = new OpenRouterProvider(apiConfig);
     }
   }
 

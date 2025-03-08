@@ -19,6 +19,7 @@ import { DeepseekAPI } from "../api/deepseek.api";
 import { ContentRanker, RankResult } from "../utils/content-rank/content-ranker";
 import { QianwenAISummarizer } from "../summarizer/qianwen-ai.summarizer";
 import { ConfigManager } from "../utils/config/config-manager";
+import { TogetherAISummarizer } from "../summarizer/together-ai.summarizer";
 
 dotenv.config();
 
@@ -40,7 +41,7 @@ export class WeixinWorkflow {
     this.scraper = new Map<string, ContentScraper>();
     this.scraper.set("fireCrawl", new FireCrawlScraper());
     this.scraper.set("twitter", new TwitterScraper());
-    this.summarizer = new QianwenAISummarizer();
+    this.summarizer = new TogetherAISummarizer();
     this.publisher = new WeixinPublisher();
     this.notifier = new BarkNotifier();
     this.renderer = new WeixinTemplateRenderer();
@@ -53,9 +54,9 @@ export class WeixinWorkflow {
     await this.summarizer.refresh();
     await this.publisher.refresh();
     await this.scraper.get("fireCrawl")?.refresh();
-    await this.scraper.get("twitter")?.refresh();
+    // await this.scraper.get("twitter")?.refresh();
     await this.imageGenerator.refresh();
-    await this.deepSeekClient.refresh();
+    // await this.deepSeekClient.refresh();
   }
 
   private async scrapeSource(
@@ -145,6 +146,7 @@ export class WeixinWorkflow {
       }
 
       // Twitter sources
+      /*
       const twitterScraper = this.scraper.get("twitter");
       if (!twitterScraper) throw new Error("TwitterScraper not found");
 
@@ -157,6 +159,7 @@ export class WeixinWorkflow {
         allContents.push(...contents);
         progress.update(++currentProgress);
       }
+      */
       progress.stop();
 
       this.stats.contents = allContents.length;
@@ -196,9 +199,9 @@ export class WeixinWorkflow {
       try {
         const configManager = ConfigManager.getInstance();
         const ranker = new ContentRanker({
-          provider: "deepseek",
-          apiKey: await configManager.get("DEEPSEEK_API_KEY") as string,
-          modelName: "deepseek-reasoner"
+          provider: "openrouter",
+          apiKey: await configManager.get("OPENROUTER_API_KEY") as string,
+          modelName: "deepseek/deepseek-r1:free"
         });
         rankedContents = await ranker.rankContents(allContents);
 

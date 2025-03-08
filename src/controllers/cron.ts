@@ -10,19 +10,19 @@ const workflowMap = new Map<number, Workflow>();
 // 初始化工作流映射
 const initializeWorkflows = () => {
   // 周一的工作流 (1)
-  workflowMap.set(1, new WeixinWorkflow());
+  // workflowMap.set(1, new WeixinWorkflow());
   // 其他日期的工作流可以在这里添加
-  workflowMap.set(2, new WeixinAIBenchWorkflow()); // 周二
+  // workflowMap.set(2, new WeixinAIBenchWorkflow()); // 周二
   // workflowMap.set(3, new AnotherWorkflow()); // 周三
-  workflowMap.set(3, new WeixinHelloGithubWorkflow()); // 周三
+  // workflowMap.set(3, new WeixinHelloGithubWorkflow()); // 周三
 
-  workflowMap.set(4, new WeixinWorkflow());
+  // workflowMap.set(4, new WeixinWorkflow());
 
-  workflowMap.set(5, new WeixinWorkflow());
+  // workflowMap.set(5, new WeixinWorkflow());
 
   workflowMap.set(6, new WeixinWorkflow());
 
-  workflowMap.set(7, new WeixinWorkflow());
+  // workflowMap.set(7, new WeixinWorkflow());
 
 
 
@@ -34,7 +34,7 @@ export const startCronJobs = async () => {
 
   // 每天凌晨3点执行
   cron.schedule(
-    "0 3 * * *",
+    "52 21 * * *",
     async () => {
       const dayOfWeek = new Date().getDay(); // 0是周日，1-6是周一到周六
       const adjustedDay = dayOfWeek === 0 ? 7 : dayOfWeek; // 将周日的0转换为7
