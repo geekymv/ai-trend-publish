@@ -93,11 +93,13 @@ export class WeixinWorkflow {
 
       // 检查 API 额度
       // deepseek
+      /*
       const deepSeekBalance = await this.deepSeekClient.getCNYBalance();
       console.log("DeepSeek余额：", deepSeekBalance);
       if (deepSeekBalance < 1.0) {
         this.notifier.warning("DeepSeek", "余额小于一元");
       }
+      */
       // 1. 获取数据源
       const sourceConfigs = await getCronSources();
 
@@ -131,6 +133,7 @@ export class WeixinWorkflow {
       }
 
       // Twitter sources
+      /*
       const twitterScraper = this.scraper.get("twitter");
       if (!twitterScraper) throw new Error("TwitterScraper not found");
 
@@ -143,6 +146,7 @@ export class WeixinWorkflow {
         allContents.push(...contents);
         progress.update(++currentProgress);
       }
+      */
       progress.stop();
 
       this.stats.contents = allContents.length;
@@ -197,6 +201,8 @@ export class WeixinWorkflow {
       );
       summaryProgress.start(topContents.length, 0);
 
+      const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
       // 批量处理内容
       const batchSize = 10;
       for (let i = 0; i < topContents.length; i += batchSize) {
@@ -204,6 +210,7 @@ export class WeixinWorkflow {
         await Promise.all(
           batch.map(async (content) => {
             await this.processContent(content);
+            await sleep(1000);
             summaryProgress.increment();
           })
         );
@@ -229,7 +236,7 @@ export class WeixinWorkflow {
       const summaryTitle = await this.summarizer.generateTitle(
         allContents.map((content) => content.title).join(" | ")
       ).then((title) => {
-        title = `${new Date().toLocaleDateString()} AI速递 | ${title}`
+        title = `${new Date().toLocaleDateString()} AI快讯 | ${title}`
         // 限制标题长度 为 64 个字符
         return title.slice(0, 64);
       });
@@ -237,13 +244,9 @@ export class WeixinWorkflow {
       console.log(`[标题生成] 生成标题: ${summaryTitle}`);
 
       // 生成封面图片
-      const imageGenerator = await ImageGeneratorFactory.getInstance().getGenerator("ALIWANX_POSTER");
+      const imageGenerator = await ImageGeneratorFactory.getInstance().getGenerator("FLUX");
       const imageUrl = await imageGenerator.generate({
-        title: summaryTitle.split(" | ")[1].trim().slice(0, 30),
-        sub_title: new Date().toLocaleDateString() + " AI速递",
-        prompt_text_zh: `科技前沿资讯 | 人工智能新闻 | 每日AI快报 - ${summaryTitle.split(" | ")[1].trim().slice(0, 30)}`,
-        generate_mode: "generate",
-        generate_num: 1
+        prompt: "Daily AI Express about cutting-edge technology and artificial intelligence news"
       });
 
       // 上传封面图片

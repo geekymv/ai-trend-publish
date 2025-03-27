@@ -41,7 +41,7 @@ export class HttpClient {
     }
 
     private async retryFetch(url: string, options: RequestOptions = {}): Promise<Response> {
-        const { retries = 3, retryDelay = 1000, ...fetchOptions } = options;
+        const { retries = 3, retryDelay = 3000, ...fetchOptions } = options;
         
         let lastError: Error | null = null;
         

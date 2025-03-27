@@ -26,15 +26,28 @@ interface CronSource {
 export const sourceConfigs: SourceConfig = {
   AI: {
     firecrawl: [
-      { identifier: "https://news.ycombinator.com/" },
-      {
-        identifier:
-          "https://www.reuters.com/technology/artificial-intelligence/",
-      },
-      { identifier: "https://simonwillison.net/" },
-      { identifier: "https://buttondown.com/ainews/archive/" },
+      { identifier: "https://www.indiehackers.com/products" },
+      { identifier: "https://www.indiehackers.com/tags/artificial-intelligence"},
+      // { identifier: "https://www.indiehackers.com/post/tech/hitting-12k-mrr-just-11-months-after-turning-a-free-side-project-into-an-ai-business-wUZgSLPMYgJMQkQ4b0ZB" },
+      { identifier: "https://www.indiehackers.com/" },
       { identifier: "https://www.aibase.com/zh/daily" },
       { identifier: "https://www.aibase.com/zh/news" },
+      { identifier: "https://www.artificialintelligence-news.com/artificial-intelligence-news/"},
+      { identifier: "https://news.ycombinator.com/" },
+      { identifier: "https://www.infoq.cn/topic/AI&LLM" },
+      { identifier: "https://www.aixinzhijie.com/" },
+      { identifier: "https://www.jiqizhixin.com/" },
+      { identifier: "https://www.aihub.cn/news/" },
+      { identifier: "https://www.ainewsletter.com/" },
+      { identifier: "https://hyper.ai/cn/news" },
+      { identifier: "https://www.reuters.com/technology/artificial-intelligence/"},
+      { identifier: "https://simonwillison.net/" },
+      { identifier: "https://buttondown.com/ainews/archive/" },
+      { identifier: "https://replicate.com/blog" },
+      { identifier: "https://venturebeat.com/category/ai/" },
+      { identifier: "https://syncedreview.com/" },
+      { identifier: "https://www.technologyreview.com/topic/artificial-intelligence/"},
+      { identifier: "https://aijourn.com/category/topics/ai/" }
     ],
     twitter: [
       { identifier: "https://x.com/OpenAIDevs" },

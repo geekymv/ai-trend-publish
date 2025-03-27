@@ -38,14 +38,22 @@ export class LLMFactory {
 
     /**
      * 解析LLM提供者配置字符串
-     * @param config 配置字符串，格式为 "PROVIDER" 或 "PROVIDER:model"
+     * @param config 配置字符串，格式为 "PROVIDER" 或 "PROVIDER:model" 或 "PROVIDER:namespace/model:version"
      * @returns 解析后的配置对象
      */
     private parseLLMConfig(config: string): ParsedLLMConfig {
-        const parts = config.split(':');
-        const providerType = parts[0] as LLMProviderType;
-        const model = parts.length > 1 ? parts[1] : undefined;
-
+        // 只在第一个冒号处分割，以支持模型名称中包含冒号的情况
+        const firstColonIndex = config.indexOf(':');
+        if (firstColonIndex === -1) {
+            // 没有冒号，只有提供者类型
+            return { 
+                providerType: config as LLMProviderType,
+                model: undefined
+            };
+        }
+        // 提取提供者类型和完整的模型名称
+        const providerType = config.substring(0, firstColonIndex) as LLMProviderType;
+        const model = config.substring(firstColonIndex + 1);
         return { providerType, model };
     }
 

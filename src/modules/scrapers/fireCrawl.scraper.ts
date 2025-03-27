@@ -28,6 +28,7 @@ export class FireCrawlScraper implements ContentScraper {
   async refresh(): Promise<void> {
     await this.validateConfig();
     this.app = new FirecrawlApp({
+      apiUrl: await ConfigManager.getInstance().get("FIRE_CRAWL_BASE_URL"),
       apiKey: await ConfigManager.getInstance().get("FIRE_CRAWL_API_KEY"),
     });
   }
@@ -85,7 +86,9 @@ export class FireCrawlScraper implements ContentScraper {
         extract: {
           prompt: promptForFirecrawl,
           schema: StoriesSchema,
+          temperature: 0.3,
         },
+        timeout: 1000 * 60 * 5
       });
 
       if (!scrapeResult.success || !scrapeResult.extract?.stories) {

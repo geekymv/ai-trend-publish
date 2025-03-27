@@ -3,6 +3,7 @@ import { TextLogoGenerator } from "@src/providers/image-gen/text-logo.ts";
 import { PDD920LogoGenerator } from "@src/providers/image-gen/pdd920-logo.ts";
 import { AliWanX21ImageGenerator } from "@src/providers/image-gen/aliyun/aliwanx2.1.image.ts";
 import { AliyunWanxPosterGenerator } from "@src/providers/image-gen/aliyun/aliwanx-poster.image-generator.ts";
+import { FluxImageGenerator } from "@src/providers/image-gen/flux.image.ts";
 
 /**
  * 图片生成器工厂类
@@ -59,6 +60,9 @@ export class ImageGeneratorFactory {
                 break;
             case "ALIWANX_POSTER":
                 generator = new AliyunWanxPosterGenerator();
+                break;
+            case "FLUX":
+                generator = new FluxImageGenerator();
                 break;
             default:
                 throw new Error(`不支持的图片生成器类型: ${type}`);

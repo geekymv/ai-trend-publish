@@ -1,5 +1,5 @@
 import { TextLogoGenerator } from "../providers/image-gen/text-logo";
-import path from "path";
+import path from "node:path";
 
 async function testTextLogo() {
   try {

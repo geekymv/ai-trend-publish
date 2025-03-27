@@ -3,6 +3,7 @@ import { getSummarizerSystemPrompt, getSummarizerUserPrompt, getTitleSystemPromp
 import { LLMFactory } from "@src/providers/llm/llm-factory.ts";
 import { ConfigManager } from "@src/utils/config/config-manager.ts";
 import { RetryUtil } from "@src/utils/retry.util.ts";
+import { jsonrepair } from 'npm:jsonrepair'
 
 export class AISummarizer implements ContentSummarizer {
   private llmFactory: LLMFactory;
@@ -44,14 +45,15 @@ export class AISummarizer implements ContentSummarizer {
         temperature: 0.7,
         response_format: { type: "json_object" }
       });
-
+      console.log('summarize:', JSON.stringify(response));
       const completion = response.choices[0]?.message?.content;
       if (!completion) {
         throw new Error("未获取到有效的摘要结果");
       }
 
       try {
-        const summary = JSON.parse(completion) as Summary;
+        const repaired = jsonrepair(completion);
+        const summary = JSON.parse(repaired) as Summary;
         if (
           !summary.title ||
           !summary.content
@@ -89,7 +91,7 @@ export class AISummarizer implements ContentSummarizer {
         temperature: 0.7,
         max_tokens: 100
       });
-
+      console.log('title:', JSON.stringify(response));
       const title = response.choices[0]?.message?.content;
       if (!title) {
         throw new Error("未获取到有效的标题");

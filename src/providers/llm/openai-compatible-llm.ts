@@ -97,7 +97,7 @@ export class OpenAICompatibleLLM implements LLMProvider {
                 }),
                 timeout: 60000, // 60秒超时
                 retries: 3,     // 最多重试3次
-                retryDelay: 1000 // 重试间隔1秒
+                retryDelay: 3000 // 重试间隔1秒
             });
         } catch (error) {
             throw new Error(`创建聊天完成失败: ${(error as Error).message}`);

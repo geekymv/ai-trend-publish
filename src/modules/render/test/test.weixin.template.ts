@@ -109,7 +109,7 @@ async function renderAndSavePreview() {
 
   //   const publishResult = await weixinPublish.publish(
   //     html,
-  //     `${new Date().toLocaleDateString()} AI速递 | Test`,
+  //     `${new Date().toLocaleDateString()} AI快讯 | Test`,
   //     "Test",
   //     "SwCSRjrdGJNaWioRQUHzgF68BHFkSlb_f5xlTquvsOSA6Yy0ZRjFo0aW9eS3JJu_"
   //   );
