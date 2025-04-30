@@ -245,10 +245,15 @@ export class WeixinWorkflow {
 
       // 生成封面图片
       const imageGenerator = await ImageGeneratorFactory.getInstance().getGenerator("FLUX");
-      const imageUrl = await imageGenerator.generate({
-        prompt: "Daily AI Express about cutting-edge technology and artificial intelligence news"
-      });
-
+      let imageUrl = ""
+      try {
+        imageUrl = await imageGenerator.generate({
+          prompt: "Daily AI Express about cutting-edge technology and artificial intelligence news"
+        });
+      } catch(error: any) {
+        console.log("生成封面图片失败", error);
+        imageUrl = "https://oss.npe4j.com/image/ai_express.jpeg";
+      }
       // 上传封面图片
       const mediaId = await this.publisher.uploadImage(imageUrl);
 
